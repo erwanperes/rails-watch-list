@@ -1,9 +1,24 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+require 'httparty'
+
+def fetch_popular_movies
+  response = HTTParty.get("https://tmdb.lewagon.com/movie/popular")
+  response.parsed_response['results']
+end
+
+# Destruction de tous les films existants dans la base de données
+Movie.destroy_all
+
+# Récupération des films populaires
+movies_data = fetch_popular_movies
+
+# Création des films dans la base de données
+movies_data.first(20).each do |movie_data|
+  Movie.create(
+	title: movie_data['title'],
+	overview: movie_data['overview'],
+	poster_url: "https://image.tmdb.org/t/p/original#{movie_data['poster_path']}",
+	rating: movie_data['vote_average']
+  )
+end
+
+puts "20 films ont été créés avec succès."

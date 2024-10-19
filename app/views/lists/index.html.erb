@@ -1,0 +1,13 @@
+<div class="row mt-4">
+	<h1>Listes</h1>
+	<% @lists.each do |list| %>
+		<p class="d-flex justify-content-between">
+			<%= link_to list.name, list %>
+			<%= link_to 'Supprimer', list_path(list), class: "text-danger", data: {
+				turbo_method: :delete,
+				turbo_confirm: "Are you sure?"
+			  } %>
+		</p>
+	<% end %>
+</div>
+
