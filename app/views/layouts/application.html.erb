@@ -11,10 +11,14 @@
   </head>
 
   <body>
-    <%= render "layouts/banner" %>
-    <%= render "layouts/navbar" %>
-    <div class="container">
+    <header>
+      <%= render "layouts/navbar" %>
+    </header>
+    <main class="container">
       <%= yield %>
-    </div>
+    </main>
+    <footer>
+      <%= render "layouts/footer" %>
+    </footer>
   </body>
 </html>
